@@ -25,7 +25,7 @@ interface Transaction {
 
 export default function App() {
   // React hooks like useState to allow us  track and update data in the component
-  const [apiUrl] = useState('http://localhost:3000');
+  const [apiUrl] = useState(process.env.REACT_APP_API_URL || 'http://localhost:3000');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);

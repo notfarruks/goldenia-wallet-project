@@ -544,8 +544,14 @@ const initDb = async () => {
   }
 };
 // Starting server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  await initDb(); // Ensures tables exist before users try to sign up
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 8080;
+
+const startServer = async () => {
+  await initDb();
+  
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();

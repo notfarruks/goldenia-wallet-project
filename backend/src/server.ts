@@ -15,6 +15,9 @@ app.use(express.json());
 // Using a connection pool for better performance and to handle multiple requests efficiently
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // For Railway's network
+  }
 });
 
 // Types
@@ -502,8 +505,47 @@ app.use((err: any, req: Request, res: Response, _next: any) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
+// We execute the entire schema.sql content here
+const initDb = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id UUID PRIMARY KEY,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        created_at TIMESTAMP WITH TIME ZONE NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS wallets (
+        id UUID PRIMARY KEY,
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        currency VARCHAR(10) NOT NULL CHECK (currency IN ('USD', 'GOLD')),
+        balance NUMERIC(18, 8) NOT NULL DEFAULT 0 CHECK (balance >= 0),
+        created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+        UNIQUE(user_id, currency)
+      );
+
+      CREATE TABLE IF NOT EXISTS transactions (
+        id UUID PRIMARY KEY,
+        wallet_id UUID NOT NULL REFERENCES wallets(id) ON DELETE CASCADE,
+        type VARCHAR(20) NOT NULL CHECK (type IN ('deposit', 'withdraw', 'transfer_debit', 'transfer_credit')),
+        amount NUMERIC(18, 8) NOT NULL CHECK (amount > 0),
+        reference VARCHAR(255),
+        created_at TIMESTAMP WITH TIME ZONE NOT NULL
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_wallets_user_id ON wallets(user_id);
+      CREATE INDEX IF NOT EXISTS idx_transactions_wallet_id ON transactions(wallet_id);
+      CREATE INDEX IF NOT EXISTS idx_transactions_created_at ON transactions(created_at DESC);
+      CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    `);
+    console.log("Database schema initialized");
+  } catch (err) {
+    console.error("Database error:", err);
+  }
+};
 // Starting server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+  await initDb(); // Ensures tables exist before users try to sign up
   console.log(`Server running on port ${PORT}`);
 });

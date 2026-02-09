@@ -1,0 +1,274 @@
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  color: white;
+  padding: 30px 20px;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+.header p {
+  margin: 10px 0 0 0;
+  font-size: 1.1em;
+}
+
+/* Alert messages */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alert.error {
+  background-color: #ffcccc;
+  color: #cc0000;
+  border: 2px solid #cc0000;
+}
+
+.alert.success {
+  background-color: #ccffcc;
+  color: #008800;
+  border: 2px solid #008800;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Sections */
+.section {
+  background-color: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.4em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.section h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 1.1em;
+}
+
+/* Forms */
+form {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+input:disabled,
+select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+button:hover:not(:disabled) {
+  background-color: #5568d3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Info boxes */
+.info {
+  background-color: #f0f4ff;
+  padding: 12px;
+  border-radius: 5px;
+  margin-top: 15px;
+  border-left: 4px solid #667eea;
+}
+
+.info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Wallet selector */
+.wallet-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.wallet-selector input {
+  flex: 1;
+}
+
+/* Balance card */
+.balance-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.balance-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 0.9em;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.balance {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Form groups for deposit/withdraw/transfer */
+.form-group {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.form-group h4 {
+  margin-top: 0;
+}
+
+.form-group form {
+  margin-top: 10px;
+}
+
+/* Transactions */
+.transactions {
+  margin-top: 15px;
+}
+
+.transaction {
+  background-color: #f9f9f9;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #667eea;
+  display: grid;
+  grid-template-columns: 100px 100px 1fr 180px;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.tx-type {
+  font-weight: bold;
+  color: #667eea;
+  text-transform: uppercase;
+}
+
+.tx-amount {
+  font-weight: bold;
+  color: #333;
+}
+
+.tx-ref {
+  color: #666;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.tx-date {
+  color: #999;
+  font-size: 12px;
+  text-align: right;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .header h1 {
+    font-size: 1.8em;
+  }
+
+  .section {
+    padding: 15px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+  }
+
+  .balance {
+    font-size: 2em;
+  }
+
+  .transaction {
+    grid-template-columns: 1fr;
+  }
+
+  .tx-date {
+    text-align: left;
+  }
+}

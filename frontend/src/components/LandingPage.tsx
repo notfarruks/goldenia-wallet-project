@@ -8,7 +8,7 @@ const LandingPage: React.FC = () => {
       <div className="header">
         <h1>💰 Goldenia Wallet</h1>
         <p>Send and receive money instantly</p>
-        <a href="https://goldenia-wallet-ui.vercel.app/" className="btn">Try Live Demo</a>
+        <a href="/wallet" className="btn">Try Live Demo</a>
       </div>
 
       <div className="container">

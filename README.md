@@ -3,8 +3,10 @@
 
 A mini wallet and transaction management system built with Node.js, Express, PostgreSQL, and React.
 
-**Live API (Railway):** https://<your-railway-app>.up.railway.app  
-**Health Check:** https://<your-railway-app>.up.railway.app/health
+**Live Backend (Railway):** https://enchanting-optimism-production.up.railway.app  
+**Health Check:** https://enchanting-optimism-production.up.railway.app/health
+
+> Note: The base URL may return 404. Please use documented API endpoints or the `/health` endpoint.
 
 ## Project Structure
 

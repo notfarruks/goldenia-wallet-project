@@ -3,6 +3,9 @@
 
 A mini wallet and transaction management system built with Node.js, Express, PostgreSQL, and React.
 
+**Live API (Railway):** https://<your-railway-app>.up.railway.app  
+**Health Check:** https://<your-railway-app>.up.railway.app/health
+
 ## Project Structure
 
 ```
@@ -29,6 +32,8 @@ goldenia-wallet-project/
 
 ## Local Development
 
+Local development uses a PostgreSQL instance running on localhost.
+
 ### Prerequisites
 
 * Node.js 16+
@@ -54,6 +59,12 @@ npm run dev
 ```
 
 Backend runs on: http://localhost:3000
+
+### Production-style local run
+```bash
+npm run build
+npm start
+```
 
 ### Frontend Setup
 
@@ -109,7 +120,7 @@ Created `WalletError` to handle all errors in one place instead of repeating err
 
 ## Assumptions
 
-* **Single Currency** : All money is in the same currency
+* **Currency (Current Implementation)** : This version assumes a single currency. The schema and logic can be extended to support multiple currencies (e.g. USD, GOLD).
 * **Instant Transfers** : Transfers happen immediately, not scheduled
 * **No Login System** : No user authentication
 * **One Wallet Per Person** : Each wallet belongs to only one user
@@ -141,15 +152,19 @@ If anything goes wrong, all changes are undone automatically.
 
 ### Duplicate Requests
 
-Each transaction has a unique ID to prevent the same transfer from happening twice by accident.
+Each transaction has a unique ID. Full idempotency (e.g. using an Idempotency-Key) can be added if required.
 
-## Deployment
+## Deployment (Railway)
 
-This project is deployed on Railway.app
+To deploy the backend on Railway:
 
-* Backend: Node.js service
-* Frontend: React app
-* Database: PostgreSQL
+1. Deploy the backend service with **Root Directory set to `backend/`**
+2. Add a PostgreSQL service
+3. In the backend service **Variables**, set:
+
+   DATABASE_URL = ${{ Postgres.DATABASE_URL }}
+
+4. Deploy
 
 ## Tech Stack
 

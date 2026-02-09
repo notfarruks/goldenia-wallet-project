@@ -222,7 +222,7 @@ To deploy the backend on Railway:
 * JavaScript
 * CSS
 
-## 📝 License
+## License
 
 MIT
 

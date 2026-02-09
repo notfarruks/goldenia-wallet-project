@@ -82,27 +82,67 @@ Frontend runs on: http://localhost:3001
 
 ## API Endpoints
 
+### Users
+* `POST /users` - Create user (email must be unique)
+
 ### Wallets
-
-* `POST /api/wallets` - Create new wallet
-* `GET /api/wallets/:id` - Get wallet details
-* `GET /api/wallets/:id/balance` - Get wallet balance
-
-### Transactions
-
-* `POST /api/transactions` - Create transaction
-* `GET /api/transactions/:id` - Get transaction details
-* `GET /api/transactions/wallet/:walletId` - Get wallet transactions
+* `POST /wallets` - Create wallet (one wallet per currency per user)
+* `POST /wallets/:id/deposit` - Deposit funds
+* `POST /wallets/:id/withdraw` - Withdraw funds
+* `POST /wallets/transfer` - Transfer between wallets (same currency)
+* `GET /wallets/:id` - Get wallet details + last 10 transactions
 
 ### Health
-
 * `GET /health` - API health check
+
+
+## Example API Requests (curl)
+
+Below are example requests using the live Railway deployment.  
+Replace placeholder IDs with actual values returned from previous responses.
+
+```bash
+# 1. Create User
+curl -X POST https://enchanting-optimism-production.up.railway.app/users \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user1@example.com"}'
+
+# 2. Create Wallet (USD)
+curl -X POST https://enchanting-optimism-production.up.railway.app/wallets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "REPLACE_WITH_USER_ID",
+    "currency": "USD"
+  }'
+
+# 3. Deposit Funds
+curl -X POST https://enchanting-optimism-production.up.railway.app/wallets/REPLACE_WITH_WALLET_ID/deposit \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 100.50}'
+
+# 4. Withdraw Funds
+curl -X POST https://enchanting-optimism-production.up.railway.app/wallets/REPLACE_WITH_WALLET_ID/withdraw \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 25.25}'
+
+# 5. Transfer Between Wallets
+curl -X POST https://enchanting-optimism-production.up.railway.app/wallets/transfer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fromWalletId": "WALLET_ID_1",
+    "toWalletId": "WALLET_ID_2",
+    "amount": 10.00
+  }'
+
+# 6. Get Wallet Details (Last 10 Transactions)
+curl https://enchanting-optimism-production.up.railway.app/wallets/REPLACE_WITH_WALLET_ID
+```
 
 ## Design Decisions
 
 ### Two Records Per Transfer
 
-Every transfer creates both a debit (money out) and credit (money in) record. This gives  transaction history for wallets, based on real banking system.
+Every transfer creates both a debit (money out) and credit (money in) record. This gives  transaction history for wallets.
 
 ### UUIDs for IDs
 
@@ -114,7 +154,7 @@ When processing a transfer, the wallet row gets locked so two transfers can't ha
 
 ### RESTful API
 
-Used standard REST patterns (GET, POST) with clear URLs like `/api/wallets` and `/api/transactions` to make the API easy to understand and use.
+Used standard REST patterns (GET, POST) with clear URLs like `/wallets` and `/users` to make the API easy to understand and use.
 
 ### Custom Error Class
 
@@ -122,11 +162,9 @@ Created `WalletError` to handle all errors in one place instead of repeating err
 
 ## Assumptions
 
-* **Currency (Current Implementation)** : This version assumes a single currency. The schema and logic can be extended to support multiple currencies (e.g. USD, GOLD).
 * **Instant Transfers** : Transfers happen immediately, not scheduled
 * **No Login System** : No user authentication
 * **One Wallet Per Person** : Each wallet belongs to only one user
-* **No Negative Balances** : Cannot spend more than in balance
 * **Two Decimal Places** : Amounts like $10.50 are allowed
 * **No Undo** : Completed transactions cannot be reversed
 
